@@ -5,13 +5,16 @@ function Activities() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const apiUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+    : '/api/activities/';
 
   useEffect(() => {
     let isMounted = true;
 
     const loadActivities = async () => {
       try {
-        const data = await fetchCollection('/api/activities/');
+        const data = await fetchCollection(apiUrl);
         if (isMounted) {
           setActivities(data);
         }
@@ -31,7 +34,7 @@ function Activities() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [apiUrl]);
 
   return (
     <section className="card shadow-sm border-0">

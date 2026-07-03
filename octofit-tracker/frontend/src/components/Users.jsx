@@ -5,13 +5,16 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const apiUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+    : '/api/users/';
 
   useEffect(() => {
     let isMounted = true;
 
     const loadUsers = async () => {
       try {
-        const data = await fetchCollection('/api/users/');
+        const data = await fetchCollection(apiUrl);
         if (isMounted) {
           setUsers(data);
         }
@@ -31,7 +34,7 @@ function Users() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [apiUrl]);
 
   return (
     <section className="card shadow-sm border-0">

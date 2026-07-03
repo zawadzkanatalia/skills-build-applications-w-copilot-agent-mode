@@ -5,13 +5,16 @@ function Workouts() {
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const apiUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+    : '/api/workouts/';
 
   useEffect(() => {
     let isMounted = true;
 
     const loadWorkouts = async () => {
       try {
-        const data = await fetchCollection('/api/workouts/');
+        const data = await fetchCollection(apiUrl);
         if (isMounted) {
           setWorkouts(data);
         }
@@ -31,7 +34,7 @@ function Workouts() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [apiUrl]);
 
   return (
     <section className="card shadow-sm border-0">

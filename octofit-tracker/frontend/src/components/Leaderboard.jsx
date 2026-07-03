@@ -5,13 +5,16 @@ function Leaderboard() {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const apiUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`
+    : '/api/leaderboard/';
 
   useEffect(() => {
     let isMounted = true;
 
     const loadLeaderboard = async () => {
       try {
-        const data = await fetchCollection('/api/leaderboard/');
+        const data = await fetchCollection(apiUrl);
         if (isMounted) {
           setEntries(data);
         }
@@ -31,7 +34,7 @@ function Leaderboard() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [apiUrl]);
 
   return (
     <section className="card shadow-sm border-0">

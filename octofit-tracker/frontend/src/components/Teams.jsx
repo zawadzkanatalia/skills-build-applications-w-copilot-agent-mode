@@ -5,13 +5,16 @@ function Teams() {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const apiUrl = import.meta.env.VITE_CODESPACE_NAME?.trim()
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+    : '/api/teams/';
 
   useEffect(() => {
     let isMounted = true;
 
     const loadTeams = async () => {
       try {
-        const data = await fetchCollection('/api/teams/');
+        const data = await fetchCollection(apiUrl);
         if (isMounted) {
           setTeams(data);
         }
@@ -31,7 +34,7 @@ function Teams() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [apiUrl]);
 
   return (
     <section className="card shadow-sm border-0">
